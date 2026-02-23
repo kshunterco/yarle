@@ -248,13 +248,23 @@ export const dropTheRope = async (options: YarleOptions): Promise<Array<string>>
 
 };
 
-function parseDateSpec(spec: string | undefined): Date | undefined {
-  if (!spec) return undefined;
+function parseDateSpec(spec?: string): Date | undefined {
+  // Treat undefined, null-ish, and empty/whitespace as "unset"
+  if (spec == null) return undefined;
+  const trimmed = spec.trim();
+  if (trimmed === '') return undefined;
 
-  const d = new Date(spec);          // handles ISO strings
-  if (Number.isNaN(d.getTime())) {
-    throw new Error(`Invalid dateFiltering value: "${spec}" (expected ISO string or now())`);
+  // Handle <input type="date"> output: "YYYY-MM-DD"
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+    // Start of day in UTC
+    const d = new Date(`${trimmed}T00:00:00Z`);
+    if (Number.isNaN(d.getTime())) return undefined;
+    return d;
   }
+
+  // Fall back to Date parsing for full ISO strings
+  const d = new Date(trimmed);
+  if (Number.isNaN(d.getTime())) return undefined; // or throw if you prefer
   return d;
 }
 
