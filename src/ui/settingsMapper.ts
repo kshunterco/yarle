@@ -69,6 +69,8 @@ export const mapSettingsToYarleOptions = (): YarleOptions => {
         haveGlobalResources: store.get('haveGlobalResources') as boolean,
         useUniqueUnknownFileNames: store.get('useUniqueUnknownFileNames') as boolean,
         useLevenshteinForLinks: store.get('useLevenshteinForLinks') as boolean,
+        processBefore: store.get('processBefore') as string,
+        processAfter: store.get('processAfter') as string,
         convertColorsToMDHighlight: store.get('convertColorsToMDHighlight') as boolean,
         keepEvernoteLinkIfNoNoteFound: store.get('keepEvernoteLinkIfNoNoteFound') as boolean,
         sanitizeResourceNameSpaces: store.get('sanitizeResourceNameSpaces') as boolean,

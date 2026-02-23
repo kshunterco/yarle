@@ -118,6 +118,18 @@ export const parseStream = async (options: YarleOptions, enexSource: string): Pr
   const tasks: TaskGroups = {}; // key: taskId value: generated md text
   const notebookName = utils.getNotebookName(enexSource);
   const processTaskFn = processTaskFactory(yarleOptions.taskOutputFormat);
+  const afterDate = parseDateSpec(yarleOptions.processAfter);
+  const beforeDate = parseDateSpec(yarleOptions.processBefore);
+  if (beforeDate) {
+	  beforeDate.setDate(beforeDate.getDate() + 1);
+  }
+
+  if (afterDate || beforeDate) {
+    loggerInfo(
+      `Date filtering active.\n  After=${afterDate?.toISOString() ?? '(none)'}\n  ` +
+      `Before=${beforeDate?.toISOString() ?? '(none)'}`
+    );
+  }
 
   return new Promise((resolve, reject) => {
 
@@ -139,9 +151,17 @@ export const parseStream = async (options: YarleOptions, enexSource: string): Pr
     });
 
     xml.on('tag:note', (note: EvernoteNoteData) => {
+      const formattedDate = `${note.updated.slice(0, 4)}-${note.updated.slice(4, 6)}-${note.updated.slice(6, 8)}`;
+      const noteUpdated = new Date(formattedDate)
       if (options.skipWebClips && isWebClip(note)) {
         ++skipped;
         loggerInfo(`Notes skipped: ${skipped}`);
+      } else if (afterDate && noteUpdated < afterDate) {
+        ++skipped;
+        loggerInfo(`Note before timerange, skipped. Total skipped: ${skipped}`);
+      } else if (beforeDate && noteUpdated > beforeDate) {
+        ++skipped;
+        loggerInfo(`Note after timerange, skipped. Total skipped: ${skipped}`);
       } else {
         if (noteAttributes) {
           // make sure single attributes are not collapsed
@@ -227,4 +247,15 @@ export const dropTheRope = async (options: YarleOptions): Promise<Array<string>>
   return outputNotebookFolders;
 
 };
+
+function parseDateSpec(spec: string | undefined): Date | undefined {
+  if (!spec) return undefined;
+
+  const d = new Date(spec);          // handles ISO strings
+  if (Number.isNaN(d.getTime())) {
+    throw new Error(`Invalid dateFiltering value: "${spec}" (expected ISO string or now())`);
+  }
+  return d;
+}
+
 // tslint:enable:no-console

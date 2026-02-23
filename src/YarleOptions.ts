@@ -72,5 +72,7 @@ export interface YarleOptions {
     useLevenshteinForLinks?: boolean;
     keepEvernoteLinkIfNoNoteFound?: boolean;
     convertColorsToMDHighlight?: boolean;
+    processAfter?: string;
+    processBefore?: string;
     globalReplacementSettings?: Array<SearchAndReplace>;
 }

@@ -36,6 +36,8 @@
     "useLevenshteinForLinks": false,
     "keepEvernoteLinkIfNoNoteFound": false,
     "convertColorsToMDHighlight": false,
+    "processAfter": "",
+    "processBefore": "",
 
     "replacementChar": "_",
     "replacementCharacterMap": {
