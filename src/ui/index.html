@@ -390,19 +390,6 @@
 												<option value="false" selected>No</option>
 											</select>
 												</div>
-												
-													<div class="form-group">
-														<!--<input type="checkbox" value="false" id='addExtensionToInternalLinks'> -->
-											<label for="preserveColorsAsHtml" class="pure-checkbox">
-											Keeps font colors encoded as inline style in span - note this is incompatible with convertColorsToMDHighlight.
-											<br><div style='font-size: 12px;'><i>Please note that this feature keeps spans as html tags, so it won't produce a standard Markdown file</i></div>
-											</label>
-											<select class="form-control configurationItem" name="preserveColorsAsHtml" id="preserveColorsAsHtml">
-												<option value="true">Yes</option>
-												<option value="false" selected>No</option>
-											</select>
-												</div>
-	
 														<div class="form-group">
 															<!--<input type="checkbox" value="false" id='plainTextNotesOnly'> -->
 												<label for="plainTextNotesOnly" class="pure-checkbox">
@@ -653,6 +640,51 @@
 													</label>
 										  
 												  <input type="text"  class="form-control configurationItem" id='obsidianTaskTag' width="20px">
+												</div>
+											</div>
+										</div>
+										<div class="configurationSection">
+										<h5 class="info-text">HTML Passthrough</h5>
+                                            <label class="pure-checkbox"><div style='font-size: 12px'><i>
+												Please note that all these features keep various HTML tags in their output, so they won't produce a standard Markdown file.
+											</i></div></label>
+										    <div class="configurationSectionItems">
+												<div class="form-group">
+											        <label for="preserveColorsAsHtml" class="pure-checkbox">
+											        Keeps font colors encoded as inline style in span - note this is incompatible with convertColorsToMDHighlight.
+											        </label>
+											        <select class="form-control configurationItem" name="preserveColorsAsHtml" id="preserveColorsAsHtml">
+												        <option value="true">Yes</option>
+												        <option value="false" selected>No</option>
+											        </select>
+												</div>
+												<div class="form-group">
+											        <label for="preserveUnderlineAsHtml" class="pure-checkbox">
+											        Converts Evernote style="text-decoration:underline" to standard HTML tag &lt;u&gt;.
+											        </label>
+											        <select class="form-control configurationItem" name="preserveUnderlineAsHtml" id="preserveUnderlineAsHtml">
+												        <option value="true">Yes</option>
+												        <option value="false" selected>No</option>
+											        </select>
+												</div>
+												<div class="form-group">
+											        <label for="preserveFontSizeAsHtml" class="pure-checkbox">
+											        Keeps font size encoded as inline style in span - note this is incompatible with convertColorsToMDHighlight.
+											        </label>
+											        <select class="form-control configurationItem" name="preserveFontSizeAsHtml" id="preserveFontSizeAsHtml">
+												        <option value="true">Yes</option>
+												        <option value="false" selected>No</option>
+											        </select>
+												</div>
+												<div class="form-group">
+											        <label for="preserveIndentAsHtml" class="pure-checkbox">
+											        Attempts to keep indented blocks indented using unordered list tags. Can produce nonstandard HTML.
+											        </label>
+											        <select class="form-control configurationItem" name="preserveIndentAsHtml" id="preserveIndentAsHtml">
+												        <option value="2">Yes, with nested &lt;ul&gt;&lt;li&gt; (standard)</option>
+												        <option value="1">Yes, with nested &lt;ul&gt; (nonstandard)</option>
+												        <option value="0" selected>No</option>
+											        </select>
 												</div>
 											</div>
 										</div>

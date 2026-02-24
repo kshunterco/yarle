@@ -1,9 +1,12 @@
 // src/utils/turndown-rules/span-rule.ts
 
 import { yarleOptions } from '../../yarle';
-import { getLanguageItems } from './../../outputLanguages/LanguageFactory';
+
 import { filterByNodeName } from './filter-by-nodename';
 import { getAttributeProxy } from './get-attribute-proxy';
+import { parseInlineStyle } from './parse-inline-style';
+
+import { getLanguageItems } from './../../outputLanguages/LanguageFactory';
 
 const EVERNOTE_HIGHLIGHT = '-evernote-highlight:true;';
 const EVERNOTE_COLORHIGHLIGHT = '--en-highlight';
@@ -11,28 +14,20 @@ const EVERNOTE_COLORHIGHLIGHT = '--en-highlight';
 const BOLD = 'bold';
 const ITALIC = 'italic';
 
-// ---- NEW helpers (safe with Evernote’s extra CSS like --inversion-type-color:...) ----
-
-function parseInlineStyle(styleValue: string): Record<string, string> {
-  const out: Record<string, string> = {};
-  styleValue
-    .split(';')
-    .map((s) => s.trim())
-    .filter(Boolean)
-    .forEach((pair) => {
-      const idx = pair.indexOf(':');
-      if (idx < 0) return;
-      const key = pair.slice(0, idx).trim().toLowerCase();
-      const val = pair.slice(idx + 1).trim();
-      out[key] = val;
-    });
-  return out;
-}
-
-function extractStyleForSpan(css: Record<string, string>): string {
+// ---- helpers (safe with Evernote’s extra CSS like --inversion-type-color:...) ----
+function buildSpanStyle(css: Record<string, string>): string {
   const parts: string[] = [];
-  if (css['color']) parts.push(`color:${css['color']}`);
-  if (css['background-color']) parts.push(`background-color:${css['background-color']}`);
+
+  if (yarleOptions.preserveColorsAsHtml) {
+    if (css['color']) parts.push(`color:${css['color']}`);
+    if (css['background-color']) parts.push(`background-color:${css['background-color']}`);
+  }
+
+  if (yarleOptions.preserveFontSizeAsHtml) {
+    if (css['font-size']) parts.push(`font-size:${css['font-size']}`);
+    // if (css['font-family']) parts.push(`font-family:${css['font-family']}`);
+  }
+
   return parts.join(';');
 }
 
@@ -43,7 +38,6 @@ function isUnderline(css: Record<string, string>): boolean {
 }
 
 // ---- Rule ----
-
 export const spanRule = {
   filter: filterByNodeName('SPAN'),
   replacement: (content: any, node: any) => {
@@ -75,24 +69,15 @@ export const spanRule = {
       content = `${languageItems.italic}${languageItems.bold}${content}${languageItems.bold}${languageItems.italic}`;
     }
 
-    // ---- NEW: Hybrid markdown mode — preserve color/background/underline as inline HTML ----
-    // Add this option to YarleOptions and config loader:
-    //   preserveColorsAsHtml?: boolean
-    if (yarleOptions.preserveColorsAsHtml) {
-      const hasColorOrBg = Boolean(css['color'] || css['background-color']);
-      const underline = isUnderline(css);
-
-      if (hasColorOrBg || underline) {
-        const style = extractStyleForSpan(css); // keep only what we care about
-        let wrapped = style ? `<span style="${style}">${content}</span>` : content;
-
-        // Portable underline (works in Joplin HTML-in-Markdown)
-        if (underline) wrapped = `<ins>${wrapped}</ins>`;
-
-        return wrapped;
-      }
+    let wrapped = content;
+    const style = buildSpanStyle(css);
+    if (style) {
+      wrapped = `<span style="${style}">${wrapped}</span>`;
     }
-
+    if (yarleOptions.preserveUnderlineAsHtml && isUnderline(css)) {
+      wrapped = `<u>${wrapped}</u>`;
+    }
+    if (wrapped !== content) return wrapped;
 
     // If we're preserving colors as HTML, never convert colors to MD highlight.
     const convertColorsToHighlight =

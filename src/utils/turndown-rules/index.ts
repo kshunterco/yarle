@@ -8,3 +8,4 @@ export * from './task-items-rule';
 export * from './newline-rule';
 export * from './div-rule';
 export * from './italic-rule';
+export * from './indent-rule';

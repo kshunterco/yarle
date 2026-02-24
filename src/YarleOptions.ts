@@ -73,5 +73,9 @@ export interface YarleOptions {
     keepEvernoteLinkIfNoNoteFound?: boolean;
     convertColorsToMDHighlight?: boolean;
     preserveColorsAsHtml?: boolean;
+    preserveUnderlineAsHtml?: boolean;
+    preserveFontSizeAsHtml?: boolean;
+    preserveIndentAsHtml?: number;
+
     globalReplacementSettings?: Array<SearchAndReplace>;
 }

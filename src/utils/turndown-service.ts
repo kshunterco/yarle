@@ -17,6 +17,7 @@ import { removeNewlines } from './remove-newlines';
 import { tanaTableBlock, tanaTableColBlock, tanaTableRowBlock } from './../constants';
 import { underlineRule } from './turndown-rules/underline-rule';
 import { encryptRule } from './turndown-rules/encrypt-rule';
+import { indentRule } from './turndown-rules/indent-rule';
 
 export const getTurndownService = (yarleOptions: YarleOptions) => {
     /* istanbul ignore next */
@@ -43,6 +44,7 @@ export const getTurndownService = (yarleOptions: YarleOptions) => {
     turndownService.addRule('italic', italicRule);
     turndownService.addRule('underline', underlineRule);
     turndownService.addRule('encrypt', encryptRule);
+    turndownService.addRule('indent', indentRule);
     if (yarleOptions.outputFormat === OutputFormat.LogSeqMD) {
         turndownService.addRule('logseq_hr', {
                 filter: ['hr'],

@@ -23,6 +23,8 @@ const loadJSONSafely = (jsonString: string, defaultRootTyoe: DefaultRootType): a
     }
 }
 export const mapSettingsToYarleOptions = (): YarleOptions => {
+    const preserveFontSizeAsHtml =
+        (store.get('preserveFontSizeAsHtml') as boolean) ?? false;
     const preserveColorsAsHtml =
         (store.get('preserveColorsAsHtml') as boolean) ?? false;
     const convertColorsToMDHighlight =
@@ -73,8 +75,11 @@ export const mapSettingsToYarleOptions = (): YarleOptions => {
         haveGlobalResources: store.get('haveGlobalResources') as boolean,
         useUniqueUnknownFileNames: store.get('useUniqueUnknownFileNames') as boolean,
         useLevenshteinForLinks: store.get('useLevenshteinForLinks') as boolean,
+        preserveUnderlineAsHtml: store.get('preserveUnderlineAsHtml') as boolean,
+        preserveIndentAsHtml: store.get('preserveIndentAsHtml') as number,
+        preserveFontSizeAsHtml,
         preserveColorsAsHtml,
-	convertColorsToMDHighlight: preserveColorsAsHtml ? false : convertColorsToMDHighlight,
+	convertColorsToMDHighlight: (preserveColorsAsHtml || preserveFontSizeAsHtml) ? false : convertColorsToMDHighlight,
         keepEvernoteLinkIfNoNoteFound: store.get('keepEvernoteLinkIfNoNoteFound') as boolean,
         sanitizeResourceNameSpaces: store.get('sanitizeResourceNameSpaces') as boolean,
         replacementChar: store.get('replacementChar') as string,

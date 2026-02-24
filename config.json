@@ -37,6 +37,9 @@
     "keepEvernoteLinkIfNoNoteFound": false,
     "convertColorsToMDHighlight": false,
     "preserveColorsAsHtml": false,
+    "preserveUnderlineAsHtml": false,
+    "preserveFontSizeAsHtml": false,
+    "preserveIndentAsHtml": 0,
 
     "replacementChar": "_",
     "replacementCharacterMap": {
