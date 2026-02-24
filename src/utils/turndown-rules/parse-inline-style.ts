@@ -15,4 +15,5 @@ export function parseInlineStyle(styleAttr: string): Record<string, string> {
       if (prop) css[prop] = val;
     });
 
-  return css;
+  return css;
+}

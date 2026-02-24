@@ -82,7 +82,6 @@ export const mapSettingsToYarleOptions = (): YarleOptions => {
 	convertColorsToMDHighlight: (preserveColorsAsHtml || preserveFontSizeAsHtml) ? false : convertColorsToMDHighlight,
         processBefore: store.get('processBefore') as string,
         processAfter: store.get('processAfter') as string,
-        convertColorsToMDHighlight: store.get('convertColorsToMDHighlight') as boolean,
         keepEvernoteLinkIfNoNoteFound: store.get('keepEvernoteLinkIfNoNoteFound') as boolean,
         sanitizeResourceNameSpaces: store.get('sanitizeResourceNameSpaces') as boolean,
         replacementChar: store.get('replacementChar') as string,

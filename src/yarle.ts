@@ -272,6 +272,7 @@ function parseDateSpec(spec?: string): Date | undefined {
   const d = new Date(trimmed);
   if (Number.isNaN(d.getTime())) return undefined; // or throw if you prefer
   return d;
+}
 
 function rewriteTitleWithYear(title: string, updated: string): string {
   const m = title.match(/\b(0?[1-9]|1[0-2])\/(0?[1-9]|[12]\d|3[01])\b/);
