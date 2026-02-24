@@ -147,6 +147,12 @@ export const parseStream = async (options: YarleOptions, enexSource: string): Pr
           // make sure single attributes are not collapsed
           note['note-attributes'] = noteAttributes;
         }
+        const newTitle = rewriteTitleWithYear(note.title, note.updated);
+        if (note.title !== newTitle) {
+          note.title = newTitle;
+          loggerInfo(`  Renamed note "${note.title}"...`);
+        }
+
         note.noteName = note.title?.slice();
         processNode(note, notebookName);
         ++noteNumber;
@@ -227,4 +233,14 @@ export const dropTheRope = async (options: YarleOptions): Promise<Array<string>>
   return outputNotebookFolders;
 
 };
+
+function rewriteTitleWithYear(title: string, updated: string): string {
+  const m = title.match(/\b(0?[1-9]|1[0-2])\/(0?[1-9]|[12]\d|3[01])\b/);
+  if (!m) return title;
+  const yyyy = updated.slice(0,4)
+  const mm = m[1].padStart(2,'0');
+  const dd = m[2].padStart(2,'0');
+  return title.replace(m[0], `${yyyy}/${mm}/${dd}`);
+}
+
 // tslint:enable:no-console
