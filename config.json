@@ -40,6 +40,8 @@
     "preserveUnderlineAsHtml": false,
     "preserveFontSizeAsHtml": false,
     "preserveIndentAsHtml": 0,
+    "processAfter": "",
+    "processBefore": "",
 
     "replacementChar": "_",
     "replacementCharacterMap": {

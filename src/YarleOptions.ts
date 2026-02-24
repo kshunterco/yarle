@@ -76,6 +76,7 @@ export interface YarleOptions {
     preserveUnderlineAsHtml?: boolean;
     preserveFontSizeAsHtml?: boolean;
     preserveIndentAsHtml?: number;
-
+    processAfter?: string;
+    processBefore?: string;
     globalReplacementSettings?: Array<SearchAndReplace>;
 }
